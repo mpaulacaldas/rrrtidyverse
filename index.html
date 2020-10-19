@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Recorriendo el Tidyverse con las R-Ladies</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="María Paula Caldas" />
+    <meta name="date" content="2020-10-19" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies-fonts.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/fitvids/fitvids.min.js"></script>
+    <link href="libs/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/str_view/str_view.css" rel="stylesheet" />
+    <script src="libs/str_view-binding/str_view.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+class: title-slide, inverse, bottom
+background-image: url(https://images.unsplash.com/photo-1487235829740-e0ac5a286e1c?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1496&amp;q=80)
+background-size: cover
+
+# Recorriendo el Tidyverse con las R-Ladies
+
+## R-Ladies Madrid
+
+### María Paula Caldas
+
+### 2020-10-19
+
+.right[
+Foto de [Octavian Rosca](https://unsplash.com/photos/UfCYo7zHyY8)
+]
+
+---
+class: about-me, right, bottom
+
+
+&lt;img style="border-radius: 50%;" src="https://github.com/mpaulacaldas.png" width="150px"/&gt;
+
+## María Paula Caldas
+
+&lt;!-- ### Postdoctoral Research Scientist --&gt;
+
+&lt;!-- ### University of Pennsylvania, Philadelphia, PA, USA --&gt;
+
+
+[<i class="fas  fa-link "></i> mpaulacaldas.com](https://mpaulacaldas.com)&lt;br/&gt;
+[<i class="fab  fa-twitter "></i> mapaulacaldas](https://twitter.com/mapaulacaldas)&lt;br/&gt;
+[<i class="fab  fa-github "></i> mpaulacaldas](https://github.com/mpaulacaldas)&lt;br/&gt;
+
+---
+class: left, middle
+
+# Antes de comenzar
+
+### Slides: &lt;https://mpaulacaldas.github.io/rrrtidyverse&gt;
+### Código: &lt;https://github.com/mpaulacaldas/rrrtidyverse&gt;
+
+
+# Paquetes
+
+
+```r
+# install.packages("tidyverse")
+library(tidyverse)
+library(lubridate)
+```
+
+---
+
+## Herramientas que usaremos hoy
+
+📦 Los paquetes del **[tidyverse](https://www.tidyverse.org/)**, desarrollados por [RStudio](https://rstudio.com/).
+
+🧮 Los **[datos sobre eventos de R-Ladies](https://github.com/cienciadedatos/datos-de-miercoles/tree/master/datos/2019/2019-06-26)** compartidos en [#DatosDeMiercoles](https://twitter.com/search?q=%23DatosDeMiercoles)
+
+📖 **[R para la Ciencia de Datos](https://es.r4ds.hadley.nz/)**, la versión en español de [R for Data Science](https://r4ds.had.co.nz/) de Garrett Grolemund y Hadley Wickham, traducido por la comunidad de hispanoablante de R y coordinado por [Riva Quiroga](https://twitter.com/rivaquiroga?lang=en).
+
+&lt;!-- TODO: Verificar nombres y vínculos --&gt;
+
+## Inspiración para esta presentación
+
+🐧 Las diapositivas y su contenido se inspiran de la presentación **[An Artic Tour of the Tidyverse](https://spcanelon.github.io/tour-of-the-tidyverse/)** de [Silvia Canelón](https://twitter.com/spcanelon) para las R-Ladies Chicago. 
+
+📦 Usando los paquetes **[xaringan](https://github.com/yihui/xaringan)**, de [Yihui Xie](https://yihui.org/en/about/),  **[xaringanExtra](https://github.com/gadenbuie/xaringanExtra)** de [Garrick Aden-Buie](https://twitter.com/grrrck), y el **[R-Ladies `xaringan` theme](https://alison.rbind.io/post/2017-12-18-r-ladies-presentation-ninja/)** diseñado por [Alison Presmanes Hill](https://twitter.com/apreshill).
+
+---
+class: inverse, bottom, left
+
+# Parte 1
+## Importar, manipular, y encadenar
+
+---
+background-image: url(https://github.com/cienciadedatos.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Datos sobre capítulos de las RLadies
+
+Estos datos fueron publicados para uno de los  [#DatosDeMiercoles](https://github.com/cienciadedatos/datos-de-miercoles/tree/master/datos/2019/2019-06-26) de junio de 2019.
+
+Para esta parte del taller, utilizaremos un tablero con la información de creación de los diferentes capítulos de las R-Ladies alrededor del mundo.
+
+#### `capitulos`
+
+
+
+
+```
+#&gt;  # A tibble: 160 x 7
+#&gt;     capitulo      creacion            miembros latitud longitud ciudad      pais 
+#&gt;     &lt;chr&gt;         &lt;dttm&gt;                 &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;
+#&gt;   1 R-Ladies Bar… 2016-10-22 10:56:36      389   41.4      2.17 Barcelona   ES   
+#&gt;   2 R-Ladies Ush… 2018-05-09 16:39:48       23  -54.8    -68.3  Ushuaia     AR   
+#&gt;   3 R-Ladies Bil… 2019-02-27 05:37:09       38   43.2     -2.93 Bilbao      ES   
+#&gt;   4 R-Ladies Bar… 2018-05-10 02:22:15      114  -41.1    -71.3  San Carlos… AR   
+#&gt;   5 R-Ladies Mel… 2016-09-02 00:31:57     1213  -37.8    145.   Melbourne   AU   
+#&gt;   6 R-Ladies Nov… 2019-05-24 15:14:08       46   45.2     19.8  Novi Sad    RS   
+#&gt;   7 R-Ladies Por… 2017-10-30 02:47:19      261  -30.0    -51.2  Porto Aleg… BR   
+#&gt;   8 R-Ladies Hig… 2019-05-09 17:48:51       30   40.5    -74.4  Highland P… US   
+#&gt;   9 R-Ladies Can… 2018-12-10 04:26:52      108  -35.3    149.   Canberra    AU   
+#&gt;  10 R-Ladies Gua… 2018-04-05 22:48:47      292   -2.21   -79.9  Guayaquil   EC   
+#&gt;  # … with 150 more rows
+```
+
+---
+background-image: url(https://raw.githubusercontent.com/tidyverse/readr/master/man/figures/logo.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Importar y exportar datos con `readr`
+
+.panelset[
+
+.panel[.panel-name[Descripción]
+
+### `readr` sirve para importar y escribir tableros rectangulares guardados en archivos de texto plano
+
+
+
+.pull-left[
+
+La representación del tablero en el archivo de texto:
+
+
+```
+ciudad,pais,miembros
+Barcelona,ES,389
+Bilbao,ES,38
+Valencia,ES,33
+Madrid,ES,1222
+```
+
+]
+.pull-right[
+
+La representación del tablero en la consola de R:
+
+
+```
+# A tibble: 4 x 3
+  ciudad    pais  miembros
+  &lt;chr&gt;     &lt;chr&gt;    &lt;dbl&gt;
+1 Barcelona ES         389
+2 Bilbao    ES          38
+3 Valencia  ES          33
+4 Madrid    ES        1222
+```
+
+]
+
+]
+
+.panel[.panel-name[Funciones]
+
+### Leémos con `read_*()` y escribimos con `write_*()`
+
+Las funciones más comunes de `readr` son:
+
+| Para leer en R | Para escribir a un archivo | Delimitador |
+|----------------|----------------------------|:-----------:|
+| `read_csv()`   | `write_csv()` | , |
+| `read_csv2()`   | `write_csv2()` | ; |
+| `read_tsv()`   | `write_tsv()` | &amp;#124; |
+| `read_delim()` | `write_delim()` | Cualquiera |
+
+- Existen también `read_fwf()`, para archivos de ancho fijo, `read_log()` para archivos de registro.
+- Y `read_rds()` para archivos de formato `.rds`, un formato nativo de R.
+
+
+]
+
+.panel[.panel-name[Ejemplos]
+
+Para leer un archivo local:
+
+
+```r
+capitulos &lt;- read_csv("capitulos_rladies.csv")
+```
+
+Para leer un archivo de la web:
+
+
+```r
+capitulos &lt;- read_csv("https://raw.githubusercontent.com/cienciadedatos/datos-de-miercoles/master/datos/2019/2019-06-26/capitulos_rladies.csv")
+```
+
+Guardar un archivo:
+
+
+```r
+write_tsv(capitulos, "capitulos_rladies.tsv")
+```
+
+]
+
+.panel[.panel-name[Discusión]
+
+### Ensayemos el código anterior en RStudio
+
+- ¿Qué se imprime en la consola cuando usamos `read_csv()`? 
+- ¿Cuántas columnas tiene el `capitulos`? ¿Cuántas líneas?
+- ¿Cuál es el delimitador de `capitulos_rladies.tsv`?
+
+]
+
+]
+
+---
+background-image: url(https://raw.githubusercontent.com/tidyverse/dplyr/master/man/figures/logo.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Manipular datos con `dplyr`
+
+.panelset[
+
+.panel[.panel-name[Descripción]
+
+### `dplyr` nos da una serie de herramientas para *manipular* datos
+
+Las principales funciones, o *verbos* de `dplyr`, son:
+
+- `select()`, para seleccionar columnas
+- `filter()`, para filtrar filas
+- `mutate()`, para crear o modificar columnas
+- `summarise()`, para resumir información de las columnas
+
+Las tres últimas funciones se pueden usar con `group_by()`, para aplicar operaciones por grupos.
+
+### ¡Dirijámonos a RStudio para explorarlas!
+
+]
+
+.panel[.panel-name[`select()`]
+
+### `select()` para seleccionar columnas
+
+Podemos seleccionar las columnas por sus nombres:
+
+
+```r
+select(capitulos, ciudad, pais)
+```
+
+Excluir las que no nos interesan:
+
+
+```r
+select(capitulos, -creacion)
+```
+
+O usar las funciones auxiliares documentadas en `?tidyselect::language`
+
+```r
+select(capitulos, latitud:pais)
+select(capitulos, starts_with("c"))
+select(capitulos, ends_with("tud"))
+```
+
+]
+
+.panel[.panel-name[`filter()`]
+
+### `filter()` para filtrar filas según *condiciones*
+
+Por ejemplo, guardando solo los capítulos de España:
+
+
+```r
+filter(capitulos, pais == "ES")
+```
+
+Los capítulos con más de 1000 miembros:
+
+
+```r
+filter(capitulos, miembros &gt; 1000)
+```
+
+Los capítulos de más de 1000 miembros que se encuentran en España:
+
+```r
+filter(capitulos, miembros &gt; 1000 &amp; pais == "ES")
+filter(capitulos, miembros &gt; 1000, pais == "ES") # ¡ojo con la coma!
+```
+
+
+]
+
+.panel[.panel-name[`mutate()`]
+
+### `mutate()` para crear o modificar columnas
+
+Podemos crear una columna a partir de los valores de otra:
+
+
+```r
+mutate(capitulos, miembros_por_cien = miembros * 100)
+```
+
+Crear una columna con un solo valor:
+
+
+```r
+mutate(capitulos, miembros_total = sum(miembros))
+```
+
+O remplazar los valores de una columna existente:
+
+
+```r
+mutate(capitulos, miembros = miembros * 100 / sum(miembros))
+```
+
+
+]
+
+.panel[.panel-name[`summarise()`]
+
+### `summarise()` para resumir información de las columnas
+
+.pull-left[
+En la mayoría de los casos, `summarise()` se usa para colapsar la información de un tablero en una sola fila:
+
+
+```r
+summarise(
+  capitulos, 
+  total_miembros = sum(miembros)
+  )
+#&gt;  # A tibble: 1 x 1
+#&gt;    total_miembros
+#&gt;             &lt;dbl&gt;
+#&gt;  1          49037
+```
+]
+
+.pull-right[
+
+... aunque también permite resumenes de más de una fila
+
+
+```r
+summarise(
+  capitulos, 
+  rango_miembros = range(miembros)
+  )
+#&gt;  # A tibble: 2 x 1
+#&gt;    rango_miembros
+#&gt;             &lt;dbl&gt;
+#&gt;  1              8
+#&gt;  2           2069
+```
+]
+
+]
+
+.panel[.panel-name[`group_by()`]
+### `group_by()` para aplicar operaciones por grupos
+
+Por ejemplo, agrupando por país:
+
+
+```r
+capitulos_agrupado &lt;- group_by(capitulos, pais)
+```
+
+`filter()` guarda la fila con mayor número de miembros por país:
+
+
+```r
+filter(capitulos_agrupado, miembros == max(miembros))
+```
+
+`mutate()` y `summarise()` devueven el total de miembros por país:
+
+
+```r
+mutate(capitulos_agrupado, total_miembros = sum(miembros))
+summarise(capitulos_agrupado, total_miembros = sum(miembros))
+```
+
+🙋 ¿Cuál es la diferencia entre el resultado de `mutate()` y `summarise()`?
+
+]
+
+]
+
+
+---
+background-image: url(https://raw.githubusercontent.com/tidyverse/magrittr/master/man/figures/logo.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Encadenar operaciones con `%&gt;%`
+
+.center[El operador `%&gt;%` se llama *pipe*. Se pronuncia *paip*.]
+
+.pull-left[
+
+### El *pipe* permite encadenar operaciones y facilita la lectura
+
+Una operación de tipo:
+
+
+```r
+g(f(x, y), z)
+```
+
+Se puede reescribir como:
+
+
+```r
+x %&gt;% f(y) %&gt;% g(z)
+```
+]
+
+.pull-right[
+
+### Los verbos de `dplyr` se pueden encadenar fácilmente porque siempre reciben y retornan un tablero
+
+
+```r
+capitulos %&gt;%
+  filter(pais %in% c("ES", "FR")) %&gt;% 
+  group_by(pais) %&gt;%
+  summarise(miembros = sum(miembros))
+#&gt;  `summarise()` ungrouping output (override with `.groups` argument)
+#&gt;  # A tibble: 2 x 2
+#&gt;    pais  miembros
+#&gt;    &lt;chr&gt;    &lt;dbl&gt;
+#&gt;  1 ES        1682
+#&gt;  2 FR         724
+```
+
+]
+
+---
+class: inverse, bottom, left
+
+# Parte 2
+## Cadenas de caracteres y fechas
+
+---
+background-image: url(https://raw.githubusercontent.com/tidyverse/stringr/master/man/figures/logo.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Cadenas de caracteres con `stringr`
+
+.panelset[
+
+.panel[.panel-name[Descripción]
+
+### `stringr` nos permite trabajar con cadenas de caracteres, o *strings*, usando expresiones regulares, o *regex*
+
+Las expresiones regulares permiten describir patrones que se encuentran en cadenas de caracteres.
+
+.pull-left[
+
+```r
+str_view_all(
+  string = c("Git", "GitHub", "R"), 
+* pattern = "G"
+  )
+```
+
+<div id="htmlwidget-aa009852165323612e84" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-aa009852165323612e84">{"x":{"html":"<ul>\n  <li><span class='match'>G<\/span>it<\/li>\n  <li><span class='match'>G<\/span>itHub<\/li>\n  <li>R<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+.pull-right[
+
+```r
+str_view_all(
+  string = c("Git", "GitHub", "R"), 
+* pattern = "G.t"
+  )
+```
+
+<div id="htmlwidget-b53843ee61b521a11ed1" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b53843ee61b521a11ed1">{"x":{"html":"<ul>\n  <li><span class='match'>Git<\/span><\/li>\n  <li><span class='match'>Git<\/span>Hub<\/li>\n  <li>R<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+]
+
+.panel[.panel-name[Ejemplos]
+
+.pull-left[
+
+### `dplyr::filter()`
+
+
+```r
+capitulos %&gt;%
+  filter(
+    str_starts(
+      ciudad,   # string
+      "M[a|e]", # patrón
+      )
+    ) %&gt;%
+  select(capitulo)
+#&gt;  # A tibble: 6 x 1
+#&gt;    capitulo           
+#&gt;    &lt;chr&gt;              
+#&gt;  1 R-Ladies Melbourne 
+#&gt;  2 R-Ladies Madrid    
+#&gt;  3 R-Ladies Memphis   
+#&gt;  4 R-Ladies Mendoza   
+#&gt;  5 R-Ladies Manchester
+#&gt;  6 R-Ladies Madison
+```
+
+]
+
+.pull-left[
+
+### `dplyr::mutate()`
+
+
+```r
+capitulos %&gt;% 
+  mutate(
+    capitulo = str_remove(
+      capitulo,   # string
+      "R-Ladies " # patrón
+    )
+  ) %&gt;% 
+  select(capitulo)
+#&gt;  # A tibble: 160 x 1
+#&gt;     capitulo     
+#&gt;     &lt;chr&gt;        
+#&gt;   1 Barcelona    
+#&gt;   2 Ushuaia      
+#&gt;   3 Bilbao       
+#&gt;   4 Bariloche    
+#&gt;   5 Melbourne    
+#&gt;   6 Novi Sad     
+#&gt;   7 Porto Alegre 
+#&gt;   8 Highland Park
+#&gt;   9 Canberra     
+#&gt;  10 Guayaquil    
+#&gt;  # … with 150 more rows
+```
+
+]
+
+
+]
+
+.panel[.panel-name[Ejercicio]
+
+¿Cuál es el único capítulo de las R-Ladies que *no* comienza por `"R-Ladies"`?
+
+
+```r
+capitulos %&gt;%
+  filter(str_...(capitulo, ..., ...)) %&gt;%
+  select(capitulo)
+```
+
+]
+
+]
+
+---
+background-image: url(https://raw.githubusercontent.com/tidyverse/lubridate/master/man/figures/logo.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Fechas con `lubridate`
+
+.panelset[
+
+.panel[.panel-name[Descripción]
+
+### `lubridate` facilita el trabajo con fechas y horas
+
+- Permite **crear** fechas y horas a partir de cadenas de caracteres o componentes individuales.
+    
+    ```r
+    ymd_hms("2010-12-13 15:30:30")
+    #&gt;  [1] "2010-12-13 15:30:30 UTC"
+    ```
+- Permite **extraer** componentes de fechas y horas.
+    
+    ```r
+     ymd_hms("2010-12-13 15:30:30") %&gt;% month()
+    #&gt;  [1] 12
+    ```
+
+- Facilita el trabajo con **lapsos de tiempo** y **zonas horarias**.
+
+
+]
+
+.panel[.panel-name[Ejemplos]
+
+
+```r
+capitulos %&gt;% 
+  select(capitulo, creacion) %&gt;% 
+  mutate(
+    hora = hour(creacion),
+    minuto = minute(creacion),
+    segundo = second(creacion)
+  )
+#&gt;  # A tibble: 160 x 5
+#&gt;     capitulo               creacion             hora minuto segundo
+#&gt;     &lt;chr&gt;                  &lt;dttm&gt;              &lt;int&gt;  &lt;int&gt;   &lt;dbl&gt;
+#&gt;   1 R-Ladies Barcelona     2016-10-22 10:56:36    10     56      36
+#&gt;   2 R-Ladies Ushuaia       2018-05-09 16:39:48    16     39      48
+#&gt;   3 R-Ladies Bilbao        2019-02-27 05:37:09     5     37       9
+#&gt;   4 R-Ladies Bariloche     2018-05-10 02:22:15     2     22      15
+#&gt;   5 R-Ladies Melbourne     2016-09-02 00:31:57     0     31      57
+#&gt;   6 R-Ladies Novi Sad      2019-05-24 15:14:08    15     14       8
+#&gt;   7 R-Ladies Porto Alegre  2017-10-30 02:47:19     2     47      19
+#&gt;   8 R-Ladies Highland Park 2019-05-09 17:48:51    17     48      51
+#&gt;   9 R-Ladies Canberra      2018-12-10 04:26:52     4     26      52
+#&gt;  10 R-Ladies Guayaquil     2018-04-05 22:48:47    22     48      47
+#&gt;  # … with 150 more rows
+```
+
+]
+
+.panel[.panel-name[Ejercicio]
+
+¿En qué año se creó el mayor número de capítulos de R-Ladies? ¿Tenemos información para los 12 meses de cada año?
+
+
+```r
+capitulos %&gt;% 
+  mutate(
+    anio = ...(creacion),
+    mes = ...(creacion)
+    ) %&gt;% 
+  ...(anio) %&gt;% 
+  summarise(
+    n_capitulos = n(),
+    n_meses = n_distinct(mes)
+    )
+```
+
+
+]
+
+]
+
+
+---
+class: inverse, bottom, left
+
+# Parte 3
+## Datos relacionales y datos ordenados
+
+---
+background-image: url(https://raw.githubusercontent.com/tidyverse/tidyr/master/man/figures/logo.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Ordenar datos con `tidyr`
+
+.panelset[
+.panel[.panel-name[Descripción]
+
+Existen tres reglas interrelacionadas que hacen que un conjunto de datos sea ordenado:
+
+1. Cada variable debe tener su propia columna.
+1. Cada observación debe tener su propia fila.
+1. Cada valor debe tener su propia celda.
+
+![](https://es.r4ds.hadley.nz/diagrams_w_text_as_path/es/tidy-1.svg)
+
+.right[Fuente: [R para Ciencia de Datos](https://es.r4ds.hadley.nz/datos-ordenados.html)]
+
+]
+
+.panel[.panel-name[`Ejemplo`]
+
+`capitulos` es un conjunto de datos limpio:
+
+- Cada variable tiene su propia columna.
+- Cada capítulo tiene su propia fila.
+- Cada valor tiene su propia celda.
+
+
+```r
+capitulos
+#&gt;  # A tibble: 160 x 7
+#&gt;     capitulo      creacion            miembros latitud longitud ciudad      pais 
+#&gt;     &lt;chr&gt;         &lt;dttm&gt;                 &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;
+#&gt;   1 R-Ladies Bar… 2016-10-22 10:56:36      389   41.4      2.17 Barcelona   ES   
+#&gt;   2 R-Ladies Ush… 2018-05-09 16:39:48       23  -54.8    -68.3  Ushuaia     AR   
+#&gt;   3 R-Ladies Bil… 2019-02-27 05:37:09       38   43.2     -2.93 Bilbao      ES   
+#&gt;   4 R-Ladies Bar… 2018-05-10 02:22:15      114  -41.1    -71.3  San Carlos… AR   
+#&gt;   5 R-Ladies Mel… 2016-09-02 00:31:57     1213  -37.8    145.   Melbourne   AU   
+#&gt;   6 R-Ladies Nov… 2019-05-24 15:14:08       46   45.2     19.8  Novi Sad    RS   
+#&gt;   7 R-Ladies Por… 2017-10-30 02:47:19      261  -30.0    -51.2  Porto Aleg… BR   
+#&gt;   8 R-Ladies Hig… 2019-05-09 17:48:51       30   40.5    -74.4  Highland P… US   
+#&gt;   9 R-Ladies Can… 2018-12-10 04:26:52      108  -35.3    149.   Canberra    AU   
+#&gt;  10 R-Ladies Gua… 2018-04-05 22:48:47      292   -2.21   -79.9  Guayaquil   EC   
+#&gt;  # … with 150 more rows
+```
+
+]
+
+.panel[.panel-name[`pivot_longer()`]
+
+"Ensuciemos" nuestros datos:
+
+
+```r
+capitulos_coord_largo &lt;- capitulos %&gt;%
+  pivot_longer(
+    c(latitud, longitud),
+    names_to = "nombre_coord",
+    values_to = "valor_coord"
+    )
+capitulos_coord_largo
+#&gt;  # A tibble: 320 x 7
+#&gt;     capitulo  creacion            miembros ciudad  pais  nombre_coord valor_coord
+#&gt;     &lt;chr&gt;     &lt;dttm&gt;                 &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;
+#&gt;   1 R-Ladies… 2016-10-22 10:56:36      389 Barcel… ES    latitud            41.4 
+#&gt;   2 R-Ladies… 2016-10-22 10:56:36      389 Barcel… ES    longitud            2.17
+#&gt;   3 R-Ladies… 2018-05-09 16:39:48       23 Ushuaia AR    latitud           -54.8 
+#&gt;   4 R-Ladies… 2018-05-09 16:39:48       23 Ushuaia AR    longitud          -68.3 
+#&gt;   5 R-Ladies… 2019-02-27 05:37:09       38 Bilbao  ES    latitud            43.2 
+#&gt;   6 R-Ladies… 2019-02-27 05:37:09       38 Bilbao  ES    longitud           -2.93
+#&gt;   7 R-Ladies… 2018-05-10 02:22:15      114 San Ca… AR    latitud           -41.1 
+#&gt;   8 R-Ladies… 2018-05-10 02:22:15      114 San Ca… AR    longitud          -71.3 
+#&gt;   9 R-Ladies… 2016-09-02 00:31:57     1213 Melbou… AU    latitud           -37.8 
+#&gt;  10 R-Ladies… 2016-09-02 00:31:57     1213 Melbou… AU    longitud          145.  
+#&gt;  # … with 310 more rows
+```
+
+]
+
+.panel[.panel-name[`pivot_wider()`]
+
+Volvamos al estado inicial:
+
+
+```r
+capitulos_coord_largo %&gt;%
+  pivot_wider(
+    names_from = nombre_coord, 
+    values_from = valor_coord
+    )
+#&gt;  # A tibble: 160 x 7
+#&gt;     capitulo      creacion            miembros ciudad      pais  latitud longitud
+#&gt;     &lt;chr&gt;         &lt;dttm&gt;                 &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;   1 R-Ladies Bar… 2016-10-22 10:56:36      389 Barcelona   ES      41.4      2.17
+#&gt;   2 R-Ladies Ush… 2018-05-09 16:39:48       23 Ushuaia     AR     -54.8    -68.3 
+#&gt;   3 R-Ladies Bil… 2019-02-27 05:37:09       38 Bilbao      ES      43.2     -2.93
+#&gt;   4 R-Ladies Bar… 2018-05-10 02:22:15      114 San Carlos… AR     -41.1    -71.3 
+#&gt;   5 R-Ladies Mel… 2016-09-02 00:31:57     1213 Melbourne   AU     -37.8    145.  
+#&gt;   6 R-Ladies Nov… 2019-05-24 15:14:08       46 Novi Sad    RS      45.2     19.8 
+#&gt;   7 R-Ladies Por… 2017-10-30 02:47:19      261 Porto Aleg… BR     -30.0    -51.2 
+#&gt;   8 R-Ladies Hig… 2019-05-09 17:48:51       30 Highland P… US      40.5    -74.4 
+#&gt;   9 R-Ladies Can… 2018-12-10 04:26:52      108 Canberra    AU     -35.3    149.  
+#&gt;  10 R-Ladies Gua… 2018-04-05 22:48:47      292 Guayaquil   EC      -2.21   -79.9 
+#&gt;  # … with 150 more rows
+```
+
+
+]
+
+]
+
+
+---
+background-image: url(https://github.com/cienciadedatos.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Datos sobre eventos de las RLadies
+
+Ahora comenzaremos a trabajar con un tablero adicional con información de los eventos organizados por los diferentes capítulos de las R-Ladies.
+
+
+```r
+eventos &lt;- read_csv("https://raw.githubusercontent.com/cienciadedatos/datos-de-miercoles/master/datos/2019/2019-06-26/eventos_rladies.csv")
+```
+
+.pull-left[
+#### `eventos`
+
+
+```r
+glimpse(eventos)
+#&gt;  Rows: 1,534
+#&gt;  Columns: 6
+#&gt;  $ capitulo           &lt;chr&gt; "R-Ladies Barcelona", "R-Ladies Barcelona", "R-Lad…
+#&gt;  $ titulo_evento      &lt;chr&gt; "¡Primer evento de R-Ladies Barcelona!", "Scalable…
+#&gt;  $ fecha_local        &lt;date&gt; 2016-11-21, 2016-12-05, 2017-01-16, 2017-02-20, 2…
+#&gt;  $ hora_local         &lt;time&gt; 19:00:00, 19:00:00, 19:00:00, 19:00:00, 19:00:00,…
+#&gt;  $ respuesta_asistire &lt;dbl&gt; 18, 58, 33, 38, 16, 31, 18, 1, 33, 36, 28, 30, 8, …
+#&gt;  $ descripcion_evento &lt;chr&gt; "&lt;p&gt;Estamos preparando el primer encuentro de #RLa…
+```
+]
+
+.pull-right[
+#### `capitulos`
+
+```r
+glimpse(capitulos)
+#&gt;  Rows: 160
+#&gt;  Columns: 7
+#&gt;  $ capitulo &lt;chr&gt; "R-Ladies Barcelona", "R-Ladies Ushuaia", "R-Ladies Bilbao",…
+#&gt;  $ creacion &lt;dttm&gt; 2016-10-22 10:56:36, 2018-05-09 16:39:48, 2019-02-27 05:37:…
+#&gt;  $ miembros &lt;dbl&gt; 389, 23, 38, 114, 1213, 46, 261, 30, 108, 292, 149, 658, 118…
+#&gt;  $ latitud  &lt;dbl&gt; 41.40, -54.79, 43.25, -41.14, -37.81, 45.25, -30.04, 40.50, …
+#&gt;  $ longitud &lt;dbl&gt; 2.17, -68.31, -2.93, -71.32, 144.96, 19.85, -51.22, -74.43, …
+#&gt;  $ ciudad   &lt;chr&gt; "Barcelona", "Ushuaia", "Bilbao", "San Carlos de Bariloche",…
+#&gt;  $ pais     &lt;chr&gt; "ES", "AR", "ES", "AR", "AU", "RS", "BR", "US", "AU", "EC", …
+```
+
+]
+
+Ambos tableros comparten la columna `capitulo`.
+
+
+---
+background-image: url(https://raw.githubusercontent.com/tidyverse/dplyr/master/man/figures/logo.png)
+background-position: 750px 50px
+background-size: 80px
+
+# Datos relacionales con `dplyr`
+
+.panelset[
+
+.panel[.panel-name[Descripción]
+
+### Los verbos **join** de `dplyr` permiten unir tableros relacionadas
+
+**Uniones de transformación**, que agregan nuevas variables a un tablero con respecto a las observaciones de otro tablero.
+
+- `left_join()`
+- `right_join()`
+- `full_join()`
+- `inner_join()`
+
+**Uniones de filtro**, que filtran observaciones con respecto a la presencia o a la ausencia de observaciones en otro tablero.
+
+- `semi_join()`
+- `anti_join()`
+
+]
+
+.panel[.panel-name[`left_join()`]
+
+
+```r
+dim(eventos)
+#&gt;  [1] 1534    6
+
+left_join(eventos, capitulos, by = "capitulo")
+#&gt;  # A tibble: 1,534 x 12
+#&gt;     capitulo titulo_evento fecha_local hora_local respuesta_asist…
+#&gt;     &lt;chr&gt;    &lt;chr&gt;         &lt;date&gt;      &lt;time&gt;                &lt;dbl&gt;
+#&gt;   1 R-Ladie… ¡Primer even… 2016-11-21  19:00                    18
+#&gt;   2 R-Ladie… Scalable Mac… 2016-12-05  19:00                    58
+#&gt;   3 R-Ladie… RMarkdown tu… 2017-01-16  19:00                    33
+#&gt;   4 R-Ladie… Google Analy… 2017-02-20  19:00                    38
+#&gt;   5 R-Ladie… Data wrangli… 2017-03-20  19:00                    16
+#&gt;   6 R-Ladie… Introducció … 2017-04-24  19:00                    31
+#&gt;   7 R-Ladie… Descifrando … 2017-06-12  19:00                    18
+#&gt;   8 R-Ladie… WomenInTech … 2017-08-25  18:30                     1
+#&gt;   9 R-Ladie… Plots with g… 2017-09-27  19:00                    33
+#&gt;  10 R-Ladie… Take your R … 2017-11-06  19:00                    36
+#&gt;  # … with 1,524 more rows, and 7 more variables: descripcion_evento &lt;chr&gt;,
+#&gt;  #   creacion &lt;dttm&gt;, miembros &lt;dbl&gt;, latitud &lt;dbl&gt;, longitud &lt;dbl&gt;,
+#&gt;  #   ciudad &lt;chr&gt;, pais &lt;chr&gt;
+```
+
+]
+
+.panel[.panel-name[`semi_join()`]
+
+
+```r
+capitulos_mpc &lt;- filter(capitulos, pais %in% c("ES", "FR", "CO"))
+pull(capitulos_mpc, ciudad)
+#&gt;  [1] "Barcelona"   "Bilbao"      "Valencia"    "Madrid"      "Lyon"       
+#&gt;  [6] "Montpellier" "Paris"       "Strasbourg"  "Bogotá"
+
+semi_join(eventos, capitulos_mpc, by = "capitulo")
+#&gt;  # A tibble: 78 x 6
+#&gt;     capitulo titulo_evento fecha_local hora_local respuesta_asist…
+#&gt;     &lt;chr&gt;    &lt;chr&gt;         &lt;date&gt;      &lt;time&gt;                &lt;dbl&gt;
+#&gt;   1 R-Ladie… ¡Primer even… 2016-11-21  19:00                    18
+#&gt;   2 R-Ladie… Scalable Mac… 2016-12-05  19:00                    58
+#&gt;   3 R-Ladie… RMarkdown tu… 2017-01-16  19:00                    33
+#&gt;   4 R-Ladie… Google Analy… 2017-02-20  19:00                    38
+#&gt;   5 R-Ladie… Data wrangli… 2017-03-20  19:00                    16
+#&gt;   6 R-Ladie… Introducció … 2017-04-24  19:00                    31
+#&gt;   7 R-Ladie… Descifrando … 2017-06-12  19:00                    18
+#&gt;   8 R-Ladie… WomenInTech … 2017-08-25  18:30                     1
+#&gt;   9 R-Ladie… Plots with g… 2017-09-27  19:00                    33
+#&gt;  10 R-Ladie… Take your R … 2017-11-06  19:00                    36
+#&gt;  # … with 68 more rows, and 1 more variable: descripcion_evento &lt;chr&gt;
+```
+
+]
+
+]
+
+---
+class: inverse, middle, center
+background-image: url(https://images.unsplash.com/photo-1487235829740-e0ac5a286e1c?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1496&amp;q=80)
+background-size: cover
+
+# ¿Preguntas?
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

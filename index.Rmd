@@ -61,6 +61,7 @@ meta() %>%
       ),
     og_type = "website",
     og_author = rmarkdown::metadata$author,
+    og_locale = "es_ES",
     twitter_card_type = "summary_large_image",
     twitter_creator = paste0("@", basename(rmarkdown::metadata$url_twitter))
   )

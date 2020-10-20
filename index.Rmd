@@ -188,9 +188,9 @@ Las funciones más comunes de `readr` son:
 
 | Para leer en R | Para escribir a un archivo | Delimitador |
 |----------------|----------------------------|:-----------:|
-| `read_csv()`   | `write_csv()` | , |
-| `read_csv2()`   | `write_csv2()` | ; |
-| `read_tsv()`   | `write_tsv()` | &#124; |
+| `read_csv()`   | `write_csv()` | `,` |
+| `read_csv2()`   | `write_csv2()` | `;` |
+| `read_tsv()`   | `write_tsv()` | `\t` |
 | `read_delim()` | `write_delim()` | Cualquiera |
 
 - Existen también `read_fwf()`, para archivos de ancho fijo, `read_log()` para archivos de registro.

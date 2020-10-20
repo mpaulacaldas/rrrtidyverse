@@ -2,13 +2,14 @@
 title: "Recorriendo el Tidyverse con las R-Ladies"
 subtitle: "R-Ladies Madrid"
 author: "María Paula Caldas"
+description: "Introducción al manejo de datos con el Tidyverse. Presentado en el meet-up de R-Ladies Madrid en 2020-10-19."
+date: "2020-10-19"
 url_website: "https://mpaulacaldas.com"
 url_twitter: "https://twitter.com/mapaulacaldas"
 url_github: "https://github.com/mpaulacaldas"
 url_slides: "https://mpaulacaldas.github.io/rrrtidyverse"
 url_source: "https://github.com/mpaulacaldas/rrrtidyverse"
-github: "mpaulacaldas"
-date: "2020-10-19"
+twitter_card: "https://raw.githubusercontent.com/mpaulacaldas/rrrtidyverse/gh-pages/social-card.jpg"
 output:
   xaringan::moon_reader:
     css: ["default", "rladies", "rladies-fonts"]
@@ -19,7 +20,7 @@ output:
       highlightLines: true
       highlightLanguage: ["r", "css", "yaml"]
       countIncrementalSlides: true
-    ratio: "16:9"
+      ratio: "16:9"
 ---
 
 ```{r setup, include=FALSE}
@@ -39,6 +40,29 @@ xaringanExtra::style_share_again(
 xaringanExtra::embed_xaringan(
   url = rmarkdown::metadata$url_slides, 
   ratio = "16:9"
+  )
+```
+
+```{r metathis, echo=FALSE}
+library(metathis)
+meta() %>%
+  meta_name("github-repo" = rmarkdown::metadata$url_source) %>% 
+  meta_social(
+    title = rmarkdown::metadata$title,
+    description = rmarkdown::metadata$description,
+    url = rmarkdown::metadata$url_slides,
+    image = rmarkdown::metadata$twitter_card,
+    image_alt = paste(
+      rmarkdown::metadata$title, 
+      rmarkdown::metadata$subtitle,
+      rmarkdown::metadata$author,
+      rmarkdown::metadata$date,
+      sep = ". "
+      ),
+    og_type = "website",
+    og_author = rmarkdown::metadata$author,
+    twitter_card_type = "summary_large_image",
+    twitter_creator = paste0("@", basename(rmarkdown::metadata$url_twitter))
   )
 ```
 

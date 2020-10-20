@@ -188,6 +188,7 @@ eventos_mensuales_ancho <- read_...(...)
 
 eventos_mensuales_ancho %>%
   pivot_...(
+    ...,
     ... = ...,
     ... = ...
   )

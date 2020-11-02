@@ -12,6 +12,8 @@ Tidyverse, presentado en el meet-up de las R-Ladies Madrid.
 - Para descargar los ejercicios: <https://github.com/mpaulacaldas/rrrtidyverse/archive/master.zip>
 - Evento: https://www.meetup.com/rladies-madrid/events/273699518/
 
+*Extra:* El Rmd de genera la presentación xaringan se encuentra en la rama [`gh-pages`](https://github.com/mpaulacaldas/rrrtidyverse/tree/gh-pages) de este repositorio.
+
 ---
 
 This work is licensed under a

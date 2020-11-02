@@ -143,8 +143,8 @@ class: inverse, bottom, left
 
 ---
 background-image: url(https://github.com/cienciadedatos.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 110px
 
 # Datos sobre capítulos de las RLadies
 
@@ -164,8 +164,8 @@ capitulos
 
 ---
 background-image: url(https://raw.githubusercontent.com/tidyverse/readr/master/man/figures/logo.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 100px
 
 # Importar y exportar datos con `readr`
 
@@ -260,8 +260,8 @@ write_tsv(capitulos, "capitulos_rladies.tsv")
 
 ---
 background-image: url(https://raw.githubusercontent.com/tidyverse/dplyr/master/man/figures/logo.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 100px
 
 # Manipular datos con `dplyr`
 
@@ -419,8 +419,8 @@ summarise(capitulos_agrupado, total_miembros = sum(miembros))
 
 ---
 background-image: url(https://raw.githubusercontent.com/tidyverse/magrittr/master/man/figures/logo.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 100px
 
 # Encadenar operaciones con `%>%`
 
@@ -464,8 +464,8 @@ class: inverse, bottom, left
 
 ---
 background-image: url(https://raw.githubusercontent.com/tidyverse/stringr/master/man/figures/logo.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 100px
 
 # Cadenas de caracteres con `stringr`
 
@@ -552,8 +552,8 @@ capitulos %>%
 
 ---
 background-image: url(https://raw.githubusercontent.com/tidyverse/lubridate/master/man/figures/logo.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 100px
 
 # Fechas con `lubridate`
 
@@ -622,8 +622,8 @@ class: inverse, bottom, left
 
 ---
 background-image: url(https://raw.githubusercontent.com/tidyverse/tidyr/master/man/figures/logo.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 100px
 
 # Ordenar datos con `tidyr`
 
@@ -692,8 +692,8 @@ capitulos_coord_largo %>%
 
 ---
 background-image: url(https://github.com/cienciadedatos.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 100px
 
 # Datos sobre eventos de las RLadies
 
@@ -724,8 +724,8 @@ Ambos tableros comparten la columna `capitulo`.
 
 ---
 background-image: url(https://raw.githubusercontent.com/tidyverse/dplyr/master/man/figures/logo.png)
-background-position: 750px 50px
-background-size: 80px
+background-position: 1050px 20px
+background-size: 100px
 
 # Datos relacionales con `dplyr`
 

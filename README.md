@@ -8,7 +8,8 @@ Presentación y materiales para el taller sobre la manipulación de datos con el
 Tidyverse, presentado en el meet-up de las R-Ladies Madrid.
 
 - Presentación: <https://mpaulacaldas.github.io/rrrtidyverse/>
-- Descargar: <https://github.com/mpaulacaldas/rrrtidyverse/archive/master.zip>
+- Video: <https://youtu.be/xLQ7L_mZ7YE>
+- Para descargar los ejercicios: <https://github.com/mpaulacaldas/rrrtidyverse/archive/master.zip>
 - Evento: https://www.meetup.com/rladies-madrid/events/273699518/
 
 ---
